@@ -14,15 +14,15 @@ import TodoList from "./components/TodoList.vue";
 import TodoFooter from "./components/TodoFooter.vue";
 
 export default {
-  data() {
-    return {
-      // store로 감
-      todoItems: [],
-    };
-  },
-  methods: {
-    // 전부 store.js로 이동
-  },
+  // data() {
+  //   return {
+  //     // store로 감
+  //     todoItems: [],
+  //   };
+  // },
+  // methods: {
+  //   // 전부 store.js로 이동
+  // },
   components: {
     TodoHeader,
     TodoInput,

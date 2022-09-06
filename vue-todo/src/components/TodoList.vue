@@ -2,19 +2,19 @@
   <div>
     <transition-group name="list" tag="ul">
       <li
-        v-for="(todoItem, index) in this.$store.state.todoItems"
+        v-for="(todoItem, index) in this.storedTodoItems"
         v-bind:key="todoItem.item"
         class="shadow"
       >
         <i
           class="fa-solid fa-check checkBtn"
           v-bind:class="{ checkBtnCompleted: todoItem.completed }"
-          v-on:click="toggleComplete(todoItem, index)"
+          v-on:click="toggleComplete({ todoItem, index })"
         ></i>
         <span v-bind:class="{ textCompleted: todoItem.completed }">
           {{ todoItem.item }}</span
         >
-        <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
+        <span class="removeBtn" v-on:click="removeTodo({ todoItem, index })">
           <i class="fa-solid fa-trash"></i>
         </span>
       </li>
@@ -23,16 +23,28 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 export default {
   methods: {
-    removeTodo(todoItem, index) {
-      // this.$emit("removeItem", todoItem, index);
-      this.$store.commit("removeOneItem", {todoItem,index});
-    },
-    toggleComplete(todoItem, index) {
-      // this.$emit("toggleItem", todoItem, index);
-      this.$store.commit("toggleOneItem", {todoItem,index})
-    },
+    ...mapMutations({
+      // 인자를 선언하지 않아도 호출할 때 인자가 있으면 암묵적으로 넘기고 있음.
+      // 인자는 하나의 형태로만 넘어가므로 호출할 때 인자를 객체로 묶어줘야됨
+      removeTodo: "removeOneItem",
+      toggleComplete: "toggleOneItem",
+    }),
+  },
+  computed: {
+    // todoItems() {
+    //   return this.$store.getters.storedTodoItems;
+    // }
+    ...mapGetters(["storedTodoItems"]),
+
+    // // 서로 다른 이름으로 쓸 때는 {} 객체로 사용
+    // Vuex에 선언한 속성을 컴포넌트의 특정 메서드에다가 연결하는 문법
+    // ...mapGetters({
+    //   todoItems: 'storedTodoItems'
+    // })
   },
 };
 </script>

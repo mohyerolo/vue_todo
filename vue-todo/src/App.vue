@@ -22,6 +22,7 @@ export default {
   // 향상된 객체 리터럴 적용 (data: function()와 같은 :function() 수정)
   data() {
     return {
+      // store로 감
       todoItems: [],
     };
   },
@@ -52,21 +53,21 @@ export default {
       this.todoItems = [];
     },
   },
-  created() {
-    if (localStorage.length > 0) {
-      for (let i = 0; i < localStorage.length; i++) {
-        if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
-          // this.todoItems.push(localStorage.key(i));
-          // TodoInput.vue에서 JSON.stringify로 object를 String으로 바꿈.
-          // 이거를 다시 object로 받아와야됨.localstorage의 특성상 그렇게 해야된다고 함.
-          // console.log(JSON.parse(localStorage.getItem(localStorage.key(i)))); // value값
-          this.todoItems.push(
-            JSON.parse(localStorage.getItem(localStorage.key(i)))
-          );
-        }
-      }
-    }
-  },
+  // created() { // store.js로 이동
+  //   if (localStorage.length > 0) {
+  //     for (let i = 0; i < localStorage.length; i++) {
+  //       if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
+  //         // this.todoItems.push(localStorage.key(i));
+  //         // TodoInput.vue에서 JSON.stringify로 object를 String으로 바꿈.
+  //         // 이거를 다시 object로 받아와야됨.localstorage의 특성상 그렇게 해야된다고 함.
+  //         // console.log(JSON.parse(localStorage.getItem(localStorage.key(i)))); // value값
+  //         this.todoItems.push(
+  //           JSON.parse(localStorage.getItem(localStorage.key(i)))
+  //         );
+  //       }
+  //     }
+  //   }
+  // },
   components: {
     /**
      * 객체의 속성명과 값 명이 동일할 때 축약 가능

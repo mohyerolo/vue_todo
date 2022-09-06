@@ -6,8 +6,13 @@
         v-bind:key="todoItem.item"
         class="shadow"
       > -->
-      <li
+      <!-- <li
         v-for="(todoItem, index) in propsdata"
+        v-bind:key="todoItem.item"
+        class="shadow"
+      > -->
+      <li
+        v-for="(todoItem, index) in this.$store.state.todoItems"
         v-bind:key="todoItem.item"
         class="shadow"
       >

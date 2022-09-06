@@ -24,14 +24,14 @@
 import Modal from "./common/ModalVue.vue";
 
 export default {
-  data: function () {
+  data() {
     return {
       newTodoItem: "",
       showModal: false,
     };
   },
   methods: {
-    addTodo: function () {
+    addTodo() {
       if (this.newTodoItem !== "") {
         /**
          * this에서 $emti하면 addTotoItem이벤트 발생
@@ -44,12 +44,13 @@ export default {
         this.showModal = !this.showModal;
       }
     },
-    clearInput: function () {
+    clearInput() {
       this.newTodoItem = "";
     },
   },
   components: {
-    Modal: Modal,
+    // 축약
+    Modal
   },
 };
 </script>

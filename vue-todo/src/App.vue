@@ -19,14 +19,15 @@ import TodoList from "./components/TodoList.vue";
 import TodoFooter from "./components/TodoFooter.vue";
 
 export default {
-  data: function () {
+  // 향상된 객체 리터럴 적용 (data: function()와 같은 :function() 수정)
+  data() {
     return {
       todoItems: [],
     };
   },
   methods: {
-    addOneItem: function (todoItem) {
-      var obj = { completed: false, item: todoItem };
+    addOneItem(todoItem) {
+      const obj = { completed: false, item: todoItem };
       // 저장하는 로직
       /**
        * JSON.stringfy: 자바스크립트 객체를 스트링으로 변환.
@@ -34,11 +35,11 @@ export default {
       localStorage.setItem(todoItem, JSON.stringify(obj));
       this.todoItems.push(obj);
     },
-    removeOneItem: function (todoItem, index) {
+    removeOneItem(todoItem, index) {
       localStorage.removeItem(todoItem.item);
       this.todoItems.splice(index, 1);
     },
-    toggleOneItem: function (todoItem, index) {
+    toggleOneItem(todoItem, index) {
       // todoItem.completed = !todoItem.completed;
       // 밑에가 컴포넌트간의 경계를 더욱 명확하게 함.
       this.todoItems[index].completed = !this.todoItems[index].completed;
@@ -46,14 +47,14 @@ export default {
       localStorage.removeItem(todoItem.item);
       localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
     },
-    clearAllItems: function () {
+    clearAllItems() {
       localStorage.clear();
       this.todoItems = [];
     },
   },
-  created: function () {
+  created() {
     if (localStorage.length > 0) {
-      for (var i = 0; i < localStorage.length; i++) {
+      for (let i = 0; i < localStorage.length; i++) {
         if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
           // this.todoItems.push(localStorage.key(i));
           // TodoInput.vue에서 JSON.stringify로 object를 String으로 바꿈.
@@ -67,10 +68,14 @@ export default {
     }
   },
   components: {
-    'TodoHeader': TodoHeader,
-    'TodoInput': TodoInput,
-    'TodoList': TodoList,
-    'TodoFooter': TodoFooter
+    /**
+     * 객체의 속성명과 값 명이 동일할 때 축약 가능
+     * 'TodoHeader': TodoHeader -> 그냥 TodoHeader로 
+     */
+    TodoHeader,
+    TodoInput,
+    TodoList,
+    TodoFooter
   },
 };
 </script>

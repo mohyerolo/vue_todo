@@ -1,58 +1,45 @@
 <template>
   <div>
-    <ul>
-      <li
+    <transition-group name="list" tag="ul">
+      <!-- <li
         v-for="(todoItem, index) in todoItems"
         v-bind:key="todoItem.item"
         class="shadow"
+      > -->
+      <li
+        v-for="(todoItem, index) in propsdata"
+        v-bind:key="todoItem.item"
+        class="shadow"
       >
-      <!-- completed가 false면 적용되지 않음-->
-        <i class="fa-solid fa-check checkBtn" v-bind:class="{checkBtnCompleted: todoItem.completed}" 
-            v-on:click="toggleComplete(todoItem, index)"></i>
-        <span v-bind:class="{textCompleted: todoItem.completed}"> {{ todoItem.item }}</span>
+        <!-- completed가 false면 적용되지 않음-->
+        <i
+          class="fa-solid fa-check checkBtn"
+          v-bind:class="{ checkBtnCompleted: todoItem.completed }"
+          v-on:click="toggleComplete(todoItem, index)"
+        ></i>
+        <span v-bind:class="{ textCompleted: todoItem.completed }">
+          {{ todoItem.item }}</span
+        >
         <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
           <i class="fa-solid fa-trash"></i>
         </span>
       </li>
-    </ul>
+    </transition-group>
   </div>
 </template>
 
 <script>
 export default {
-  data: function () {
-    return {
-      todoItems: [],
-    };
-  },
+  props: ["propsdata"],
   methods: {
     removeTodo: function (todoItem, index) {
-      console.log(todoItem, index);
-      localStorage.removeItem(todoItem);
-      this.todoItems.splice(index, 1);
+      this.$emit("removeItem", todoItem, index);
+      // console.log(todoItem, index);
     },
-    toggleComplete: function (todoItem) {
-        // console.log(todoItem, index);
-        todoItem.completed = !todoItem.completed;
-        // 로컬 스토리지의 데이터 갱신
-        localStorage.removeItem(todoItem.item);
-        localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    toggleComplete: function (todoItem, index) {
+      // console.log(todoItem, index);
+      this.$emit("toggleItem", todoItem, index);
     },
-  },
-  created: function () {
-    if (localStorage.length > 0) {
-      for (var i = 0; i < localStorage.length; i++) {
-        if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
-          // this.todoItems.push(localStorage.key(i));
-          // TodoInput.vue에서 JSON.stringify로 object를 String으로 바꿈.
-          // 이거를 다시 object로 받아와야됨.localstorage의 특성상 그렇게 해야된다고 함.
-          console.log(JSON.parse(localStorage.getItem(localStorage.key(i)))); // value값
-          this.todoItems.push(
-            JSON.parse(localStorage.getItem(localStorage.key(i)))
-          );
-        }
-      }
-    }
   },
 };
 </script>
@@ -89,5 +76,15 @@ li {
 .textCompleted {
   text-decoration: line-through;
   color: #b3adad;
+}
+/* list item transition effect https://v2.vuejs.org/v2/guide/transitions.html#List-Transitions*/
+.list-enter-active,
+.list-leave-active {
+  /* 1초정도 지속 */
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
